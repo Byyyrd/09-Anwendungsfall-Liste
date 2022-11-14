@@ -140,6 +140,7 @@ public class List<ContentType> {
      *         kein aktuelles Objekt gibt
      */
     public ContentType getContent() {
+        //TODO 01f: Element zurückgeben
         return null;
     }
 
@@ -153,7 +154,7 @@ public class List<ContentType> {
      */
     public void setContent(ContentType pContent) {
         // Nichts tun, wenn es keinen Inhalt oder kein aktuelles Element gibt.
-        //TODO 01f: Inhaltsobjekt ersetzen
+        //TODO 01g: Inhaltsobjekt ersetzen
     }
 
     /**
@@ -169,7 +170,7 @@ public class List<ContentType> {
      *            das einzufuegende Objekt vom Typ ContentType
      */
     public void insert(ContentType pContent) {
-        //TODO 01g: Inhaltsobjekt einfügen
+        //TODO 01h: Inhaltsobjekt einfügen
     }
 
     /**
@@ -183,7 +184,7 @@ public class List<ContentType> {
      *            das anzuhaengende Objekt vom Typ ContentType
      */
     public void append(ContentType pContent) {
-        //TODO 01h: Inhaltsobjekt anhängen
+        //TODO 01i: Inhaltsobjekt anhängen
     }
 
     /**
@@ -197,7 +198,7 @@ public class List<ContentType> {
      *            die am Ende anzuhaengende Liste vom Typ List<ContentType>
      */
     public void concat(List<ContentType> pList) {
-        //TODO 01i: eine Liste an eine andere anhängen
+        //TODO 01j: eine Liste an eine andere anhängen
     }
 
     /**
@@ -211,7 +212,7 @@ public class List<ContentType> {
      */
     public void remove() {
         // Nichts tun, wenn es kein aktuelles Element gibt oder die Liste leer ist.
-        //TODO 01j: eine Node samt Inhaltsobjekt entfernen
+        //TODO 01k: eine Node samt Inhaltsobjekt entfernen
     }
 
     /**
@@ -226,7 +227,7 @@ public class List<ContentType> {
      *         der Liste ist
      */
     private ListNode getPrevious(ListNode pNode) {
-        //TODO 01k: Vorgänger-Node der aktuellen Node liefern.
+        //TODO 01l: Vorgänger-Node der aktuellen Node liefern.
         return null;
     }
 
