@@ -89,8 +89,8 @@ public class List<ContentType> {
      * @return true, wenn die Liste leer ist, sonst false
      */
     public boolean isEmpty() {
-        //TODO 01a: Die Liste ist leer, wenn es kein erstes Element gibt.
-        return false;
+        //COMPLETE 01a: Die Liste ist leer, wenn es kein erstes Element gibt.
+        return first == null;
     }
 
     /**
@@ -100,8 +100,8 @@ public class List<ContentType> {
      * @return true, falls Zugriff moeglich, sonst false
      */
     public boolean hasAccess() {
-        //TODO 01b: Es gibt keinen Zugriff, wenn current auf kein Element verweist.
-        return false;
+        //COMPLETE 01b: Es gibt keinen Zugriff, wenn current auf kein Element verweist.
+        return current != null;
     }
 
     /**
@@ -112,7 +112,11 @@ public class List<ContentType> {
      * den Wert false.
      */
     public void next() {
-        //TODO 01c: Wechsel auf die nächste Node
+        //COMPLETE 01c: Wechsel auf die nächste Node
+        if(!isEmpty() && hasAccess() && current != last)
+            current = current.next;
+        else
+            current = null;
     }
 
     /**
@@ -120,7 +124,9 @@ public class List<ContentType> {
      * Objekt. Ist die Liste leer, geschieht nichts.
      */
     public void toFirst() {
-        //TODO 01d: Sprung zur ersten Node
+        //COMPLETE 01d: Sprung zur ersten Node
+        if(!isEmpty())
+            current = first;
     }
 
     /**
@@ -128,7 +134,9 @@ public class List<ContentType> {
      * aktuelles Objekt. Ist die Liste leer, geschieht nichts.
      */
     public void toLast() {
-        //TODO 01e: Sprung auf die letzte Node
+        //COMPLETE 01e: Sprung auf die letzte Node
+        if(!isEmpty())
+            current = last;
     }
 
     /**
@@ -140,7 +148,9 @@ public class List<ContentType> {
      *         kein aktuelles Objekt gibt
      */
     public ContentType getContent() {
-        //TODO 01f: Element zurückgeben
+        //COMPLETE 01f: Element zurückgeben
+        if(hasAccess())
+            return current.getContentObject();
         return null;
     }
 
@@ -154,7 +164,9 @@ public class List<ContentType> {
      */
     public void setContent(ContentType pContent) {
         // Nichts tun, wenn es keinen Inhalt oder kein aktuelles Element gibt.
-        //TODO 01g: Inhaltsobjekt ersetzen
+        if(hasAccess() && pContent != null)
+            current.setContentObject(pContent);
+        //COMPLETE 01g: Inhaltsobjekt ersetzen
     }
 
     /**
@@ -227,8 +239,19 @@ public class List<ContentType> {
      *         der Liste ist
      */
     private ListNode getPrevious(ListNode pNode) {
-        //TODO 01l: Vorgänger-Node der aktuellen Node liefern.
-        return null;
+        //COMPLETE 01l: Vorgänger-Node der aktuellen Node liefern.
+        if(isEmpty() || pNode == null || pNode == first)
+            return null;
+
+        ListNode previousNode = first;
+        while (previousNode.getNextNode() != pNode){
+            previousNode = previousNode.next;
+            if(previousNode == last){
+                return null;
+            }
+        }
+
+        return previousNode;
     }
 
 }
