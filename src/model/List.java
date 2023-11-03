@@ -113,10 +113,7 @@ public class List<ContentType> {
      */
     public void next() {
         //COMPLETE 01c: Wechsel auf die nächste Node
-        if(!isEmpty() && hasAccess() && current != last)
-            current = current.next;
-        else
-            current = null;
+        if(hasAccess()) current = current.next;
     }
 
     /**
@@ -164,9 +161,9 @@ public class List<ContentType> {
      */
     public void setContent(ContentType pContent) {
         // Nichts tun, wenn es keinen Inhalt oder kein aktuelles Element gibt.
+        //COMPLETE 01g: Inhaltsobjekt ersetzen
         if(hasAccess() && pContent != null)
             current.setContentObject(pContent);
-        //COMPLETE 01g: Inhaltsobjekt ersetzen
     }
 
     /**
@@ -182,7 +179,27 @@ public class List<ContentType> {
      *            das einzufuegende Objekt vom Typ ContentType
      */
     public void insert(ContentType pContent) {
-        //TODO 01h: Inhaltsobjekt einfügen
+        //COMPLETE 01h: Inhaltsobjekt einfügen
+        if( pContent != null ){
+            ListNode node = new ListNode(pContent);
+            if(hasAccess()){
+                if(current==first ){
+                    node.setNextNode(first);
+                    first=node;
+
+                }else {
+                    ListNode targetNode = getPrevious(current);
+                    if(targetNode != null){
+                        targetNode.setNextNode(node);
+                        node.setNextNode(current);
+                    }
+                }
+            }else if (isEmpty()){
+                append(pContent);
+            }
+        }
+
+
     }
 
     /**
@@ -196,7 +213,16 @@ public class List<ContentType> {
      *            das anzuhaengende Objekt vom Typ ContentType
      */
     public void append(ContentType pContent) {
-        //TODO 01i: Inhaltsobjekt anhängen
+        //COMPLETE 01i: Inhaltsobjekt anhängen
+        if(pContent != null){
+            ListNode node = new ListNode(pContent);
+            if(!isEmpty()){
+                 last.setNextNode(node);
+            }else{
+                first = node;
+            }
+            last = node;
+        }
     }
 
     /**
@@ -210,7 +236,21 @@ public class List<ContentType> {
      *            die am Ende anzuhaengende Liste vom Typ List<ContentType>
      */
     public void concat(List<ContentType> pList) {
-        //TODO 01j: eine Liste an eine andere anhängen
+        //COMPLETE 01j: eine Liste an eine andere anhängen
+        if(pList != this && pList != null && !pList.isEmpty()){
+            if(isEmpty()){
+                this.first = pList.first;
+            }else {
+                last.setNextNode(pList.first);
+            }
+            this.last = pList.last;
+
+            pList.first = null;
+            pList.last = null;
+            pList.current = null;
+        }
+
+
     }
 
     /**
@@ -224,7 +264,22 @@ public class List<ContentType> {
      */
     public void remove() {
         // Nichts tun, wenn es kein aktuelles Element gibt oder die Liste leer ist.
-        //TODO 01k: eine Node samt Inhaltsobjekt entfernen
+        //COMPLETE 01k: eine Node samt Inhaltsobjekt entfernen
+        if(hasAccess() && !isEmpty()){
+            if(current == first){
+                first = first.getNextNode();
+                if(first == null)
+                    last = null;
+                current = first;
+            }
+
+            ListNode previousNode = getPrevious(current);
+            if(current == last)
+                last = previousNode;
+            previousNode.setNextNode(current.getNextNode());
+            current = previousNode.getNextNode();
+
+        }
     }
 
     /**
@@ -244,11 +299,8 @@ public class List<ContentType> {
             return null;
 
         ListNode previousNode = first;
-        while (previousNode.getNextNode() != pNode){
+        while (previousNode != null && previousNode.getNextNode() != pNode){
             previousNode = previousNode.next;
-            if(previousNode == last){
-                return null;
-            }
         }
 
         return previousNode;

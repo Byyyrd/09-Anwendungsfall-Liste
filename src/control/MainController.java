@@ -23,9 +23,27 @@ public class MainController {
      * @return String-Array mit den Familiennamen
      */
     public String[] showShelfContent(int index){
+        //COMPLETE 03: Ausgabe der Inhalte
         List<File> list = allShelves[index];
-        //TODO 03: Ausgabe der Inhalte
-        return new String[]{"Platzhalter00", "Platzhalter01", "Platzhalter02"};
+        if(list.isEmpty()){
+            return new String[0];
+        }
+        int count = 0;
+        list.toFirst();
+        while(list.hasAccess()){
+            list.next();
+            count++;
+        }
+        list.toFirst();
+        String[] output = new String[count];
+        for (int i = 0; i < count; i++) {
+            if(list.hasAccess()){
+                output[i] = list.getContent().getName();
+                list.next();
+            }
+        }
+        quickSort(output,0,output.length - 1);
+        return output;
     }
 
     /**
@@ -34,10 +52,36 @@ public class MainController {
      * @return true, falls die Sortierung geklappt hat, sonst false.
      */
     public boolean sort(int index){
-        //TODO 07: Sortieren einer Liste.
-        return false;
+        //COMPLETE 07: Sortieren einer Liste.
+        String[] names = showShelfContent(index);
+        quickSort(names,0,names.length - 1);
+        return true;
     }
+    public static void quickSort(String[] array, int start, int end){
+        if(end <= start){
+            return;
+        }
+        int i = start - 1;
+        int pivot = end;
+        for (int j = start; j < pivot; j++) {
+            if(array[j].compareTo(array[pivot]) < 0){
+                i++;
+                String temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+        }
+        i++;
+        String temp = array[i];
+        array[i] = array[pivot];
+        array[pivot] = temp;
+        pivot = i;
 
+
+        quickSort(array, start, pivot - 1);
+        quickSort(array, pivot + 1, end);
+
+    }
     /**
      * Die gesammte Aktensammlung eines Regals wird zur Aktensammlung eines anderen Regals gestellt.
      * @param from Regalnummer, aus dem die Akten genommen werden. Danach sind in diesem Regal keine Akten mehr.
@@ -45,8 +89,11 @@ public class MainController {
      * @return true, falls alles funktionierte, sonst false.
      */
     public boolean appendFromTo(int from, int to){
-        //TODO 04: Die Objekte einer Liste an eine andere anhängen und dabei die erste Liste leeren.
-        return false;
+        //COMPLETE 04: Die Objekte einer Liste an eine andere anhängen und dabei die erste Liste leeren.
+        List<File> fromList = allShelves[from];
+        List<File> toList = allShelves[to];
+        toList.concat(fromList);
+        return true;
     }
 
     /**
@@ -57,8 +104,10 @@ public class MainController {
      * @return true, falls das Hinzufügen geklappt hat, sonst false.
      */
     public boolean appendANewFile(int index, String name, String phoneNumber){
-        //TODO 02: Hinzufügen einer neuen Akte am Ende der Liste.
-        return false;
+        //COMPLETE 02: Hinzufügen einer neuen Akte am Ende der Liste.
+        List<File> list = allShelves[index];
+        list.append(new File(name, phoneNumber));
+        return true;
     }
 
     /**
@@ -69,7 +118,11 @@ public class MainController {
      * @return true, falls das Einfügen geklappt hat, sonst false.
      */
     public boolean insertANewFile(int index, String name, String phoneNumber){
-        //TODO 08: Einfügen einer neuen Akte an die richtige Stelle innerhalb der Liste.
+        //COMPLETE 08: Einfügen einer neuen Akte an die richtige Stelle innerhalb der Liste
+        sort(index);
+        List<File> list = allShelves[index];
+        list.append(new File(name,phoneNumber));
+        sort(index);
         return false;
     }
 
@@ -79,7 +132,27 @@ public class MainController {
      * @return Zahlen-Array der Länge 2. Bei Index 0 wird das Regal, bei Index 1 die Position der Akte angegeben. Sollte das Element - also die Akte zum Namen - nicht gefunden werden, wird {-1,-1} zurückgegeben.
      */
     public int[] search(String name){
-        //TODO 05: Suchen in einer Liste.
+        //COMPLETE 05: Suchen in einer Liste.
+        for (int i = 0; i < allShelves.length; i++) {
+            List<File> list = allShelves[i];
+            if(list.isEmpty()){
+                continue;
+            }
+            int count = 0;
+            list.toFirst();
+            while(list.hasAccess()){
+                list.next();
+                count++;
+            }
+            list.toFirst();
+            for (int j = 0; j < count; j++) {
+                if(list.hasAccess()){
+                    if(list.getContent().getName().equals(name))
+                        return new int[]{i,j};
+                    list.next();
+                }
+            }
+        }
         return new int[]{-1,-1};
     }
 
@@ -90,7 +163,20 @@ public class MainController {
      * @return String-Array der Länge 2. Index 0 = Name, Indedx 1 = Telefonnummer.
      */
     public String[] remove(int shelfIndex, int fileIndex){
-        //TODO 06: Entfernen aus einer Liste.
+        //COMPLETE 06: Entfernen aus einer Liste.
+        List<File> list = allShelves[shelfIndex];
+        int i = 0;
+        list.toFirst();
+        while (list.hasAccess()){
+            if(i == fileIndex){
+                String[] output =  new String[]{list.getContent().getName(),list.getContent().getPhoneNumber()};
+                list.remove();
+                return output;
+            }
+
+            list.next();
+            i++;
+        }
         return new String[]{"Nicht vorhanden","Nicht vorhanden"};
     }
 
