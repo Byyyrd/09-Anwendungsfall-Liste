@@ -271,14 +271,13 @@ public class List<ContentType> {
                 if(first == null)
                     last = null;
                 current = first;
+            }else {
+                ListNode previousNode = getPrevious(current);
+                if (current == last)
+                    last = previousNode;
+                previousNode.setNextNode(current.getNextNode());
+                current = previousNode.getNextNode();
             }
-
-            ListNode previousNode = getPrevious(current);
-            if(current == last)
-                last = previousNode;
-            previousNode.setNextNode(current.getNextNode());
-            current = previousNode.getNextNode();
-
         }
     }
 
